@@ -1,80 +1,53 @@
-from fastapi import FastAPI,status,HTTPException
-from pydantic import BaseModel
-from typing import Optional,List
-from database import SessionLocal
-import models
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from typing import List
+from sqlalchemy.orm import Session
+from sqlalchemy import MetaData
+from . import crud, models, schemas
+from database import SessionLocal, Engine, Base
 
-app=FastAPI()
+models.Base.metadata.create_all(bind=Engine)
 
-class Item(BaseModel): #serializer
-    id:int
-    name:str
-    description:str
-    price:int
-    on_offer:bool
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()    
 
-    class Config:
-        orm_mode=True
+app = FastAPI()        
 
+origins = ["http://localhost:3000", "http://127.0.0.1"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origis = origins,
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"],
+)
 
-db=SessionLocal()
+@app.get('/items/{item_id}',response_model=schemas.Items_schemas,status_code=status.HTTP_200_OK)
+def read_item(item_id:int, db:Session=Depends(get_db)):
+    db_item = crud.get_item(db, items_id=item_id)
+    return db_item
 
-@app.get('/items',response_model=List[Item],status_code=200)
-def get_all_items():
-    items=db.query(models.Item).all()
-
+@app.get('/items',response_model=List[schemas.Items_schemas],status_code=status.HTTP_200_OK)
+def read_all_items(skip: int=0, limit: int=10, db: Session=Depends(get_db)):
+    items = crud.get_items(db, skip=skip, limit=limit)
     return items
 
-@app.get('/item/{item_id}',response_model=Item,status_code=status.HTTP_200_OK)
-def get_an_item(item_id:int):
-    item=db.query(models.Item).filter(models.Item.id==item_id).first()
-    return item
+@app.post('/items',response_model=schemas.Items_cteate, status_code=status.HTTP_201_CREATED)
+def create_an_item(item: schemas.Items_cteate, db: Session=Depends(get_db)):
+    db_item = crud.create_item(db, item=item)
+    return db_item
 
-@app.post('/items',response_model=Item,
-        status_code=status.HTTP_201_CREATED)
-def create_an_item(item:Item):
-    db_item=db.query(models.Item).filter(models.Item.name==item.name).first()
+@app.put('/items',response_model=schemas.Items_update,status_code=status.HTTP_200_OK)
+def update_an_item(item: schemas.Items_update, db: Session=Depends(get_db)):
+    db_item = crud.update_item(db, item=item)
+    return db_item
 
-    if db_item is not None:
-        raise HTTPException(status_code=400,detail="Item already exists")
-
-
-
-    new_item=models.Item(
-        name=item.name,
-        price=item.price,
-        description=item.description,
-        on_offer=item.on_offer
-    )
-
-
-    
-
-    db.add(new_item)
-    db.commit()
-
-    return new_item
-
-@app.put('/item/{item_id}',response_model=Item,status_code=status.HTTP_200_OK)
-def update_an_item(item_id:int,item:Item):
-    item_to_update=db.query(models.Item).filter(models.Item.id==item_id).first()
-    item_to_update.name=item.name
-    item_to_update.price=item.price
-    item_to_update.description=item.description
-    item_to_update.on_offer=item.on_offer
-
-    db.commit()
-
-    return item_to_update
-
-@app.delete('/item/{item_id}')
-def delete_item(item_id:int):
-    item_to_delete=db.query(models.Item).filter(models.Item.id==item_id).first()
-
-    if item_to_delete is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Resource Not Found")
-    
-    db.delete(item_to_delete)
-    db.commit()
-
-    return item_to_delete
+@app.delete('/items/{item_id}', response_model=schemas.Items_schemas, status_code=status.HTTP_200_OK)
+def delete_an_item(item_id:int, db: Session=Depends(get_db)):
+    db_item = crud.delete_item(db, items_id=item_id)
+    return db_item

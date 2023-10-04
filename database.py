@@ -1,11 +1,11 @@
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine=create_engine("postgresql://{YOUR_DATABASE_USER}:{YOUR_DATABASE_PASSWORD}@localhost/{YOUR_DATABASE_NAME}",
-    echo=True
-)
+SQLALCHEY_DATABASE_URL = "postgresql://wgq:wgq719100@hostlocal:5432/mydb"
 
-Base=declarative_base()
+Engine = create_engine(SQLALCHEY_DATABASE_URL)
 
-SessionLocal=sessionmaker(bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=Engine)
+
+Base = declarative_base()

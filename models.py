@@ -1,16 +1,23 @@
-from sqlalchemy.sql.expression import null
+from sqlalchemy import String,DateTime,Integer,Column,Text
+from sqlalchemy.sql import func
 from database import Base
-from sqlalchemy import String,Boolean,Integer,Column,Text
+
+class Items(Base):
+    __tablename__ = 'trunking_calling_setting'
+
+    id = Column(Integer, primary_key=True, index=True)
+    call_number = Column(Integer)
+    alias = Column(String)
+    location = Column(String)
+    call_num_status = Column(String)
+    calling_attribute = Column(String)
+    outbound_time = Column(String, defaut=None)
+    trunking_status = Column(String)
+    concurrency = Column(Integer)
+    area_code = Column(Integer)
+    comment = Column(Text)
+    created_time = Column(DateTime(timezone=True), server_default=func.now())
+    updated_time = Column(DateTime(timezone=True), onupdate=func.now())
 
 
-class Item(Base):
-    __tablename__='items'
-    id=Column(Integer,primary_key=True)
-    name=Column(String(255),nullable=False,unique=True)
-    description=Column(Text)
-    price=Column(Integer,nullable=False)
-    on_offer=Column(Boolean,default=False)
-
-
-    def __repr__(self):
-        return f"<Item name={self.name} price={self.price}>"
+    

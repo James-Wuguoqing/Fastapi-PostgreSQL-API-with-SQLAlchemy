@@ -5,12 +5,11 @@ SQLAlchemy is a package that makes it easier for Python programs to communicate 
 
 Many web, mobile, geospatial, and analytics applications use PostgreSQL as their primary data storage or data warehouse.
 
-This is code I wrote for the [video](https://youtu.be/2g1ZjA6zHRo)
 
 ## How to run the REST API
 Get this project from Github
 ``` 
-git clone https://github.com/jod35/Build-a-fastapi-and-postgreSQL-API-with-SQLAlchemy
+git clone https://github.com/James-Wuguoqing/Fastapi-PostgreSQL-API-with-SQLAlchemy
  
 ```
 
@@ -23,7 +22,7 @@ git clone https://github.com/jod35/Build-a-fastapi-and-postgreSQL-API-with-SQLAl
 * Change this line in ` database.py ` to 
 
 ``` 
-engine=create_engine("postgresql://{YOUR_DATABASE_USER}:{YOUR_DATABASE_PASSWORD}@localhost/{YOUR_DATABASE_NAME}",
+engine=create_engine("postgresql://{YOUR_DATABASE_USER}:{YOUR_DATABASE_PASSWORD}@localhost:port/{YOUR_DATABASE_NAME}",
     echo=True
 )
 ```
@@ -59,4 +58,4 @@ pip install -r requirements.txt
 ``` python main.py ```
 
 ## Author 
-[Ssali Jonathan](https://github.com/jod35)
+[James Wuguoqing](https://github.com/James-Wuguoqing)
