@@ -12,14 +12,21 @@ class ItemsBase(BaseModel):
     area_code: int
     comment: str
 
-class Items_cteate(ItemsBase):
-    pass
+    class config:
+        orm_mode = True
+
 
 class Items_update(ItemsBase):
     pass
     
-class Items_schemas(ItemsBase):
-    id: int
+class Items_create(ItemsBase):
+    id: str
+
+    class Config:
+        orm_mode = True
+
+class Items(ItemsBase):
+    id: str
 
     class Config:
         orm_mode = True
