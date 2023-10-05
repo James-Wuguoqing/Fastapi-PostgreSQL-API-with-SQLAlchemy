@@ -1,10 +1,9 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from sqlalchemy.orm import Session
-from sqlalchemy import MetaData
 from . import crud, models, schemas
-from database import SessionLocal, engine, Base
+from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
