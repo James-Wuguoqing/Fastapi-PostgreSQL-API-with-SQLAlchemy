@@ -6,6 +6,7 @@ class ItemsBase(BaseModel):
     location: str
     call_num_status: str
     calling_attribute: str
+    outbound_time: str
     trunking_status: str
     concurrency: int
     area_code: int
