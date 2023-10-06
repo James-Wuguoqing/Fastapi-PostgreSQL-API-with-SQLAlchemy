@@ -1,7 +1,7 @@
 from sqlalchemy import String,DateTime,Integer,Column
 from sqlalchemy.sql import func
 from uuid import uuid4
-from database import Base
+from .database import Base
 import uuid
 
 
