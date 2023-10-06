@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from uuid import UUID
-from . import models, schemas 
+import models, schemas 
 
 def get_item(db:Session, items_id:str):
     db_item = db.query(models.Items).filter(models.Items.id == items_id).first()

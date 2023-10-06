@@ -14,7 +14,7 @@ class Items(Base):
     location = Column(String)
     call_num_status = Column(String)
     calling_attribute = Column(String)
-    outbound_time = Column(String, defaut=None)
+    outbound_time = Column(String)
     trunking_status = Column(String)
     concurrency = Column(Integer)
     area_code = Column(Integer)
