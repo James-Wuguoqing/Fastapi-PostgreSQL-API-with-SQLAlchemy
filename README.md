@@ -52,7 +52,7 @@ pip install -r requirements.txt
 ```
 
 ### Create the database
-``` python create_db.py ```
+``` python database.py ```
 
 ## Run the API
 ``` python main.py ```
