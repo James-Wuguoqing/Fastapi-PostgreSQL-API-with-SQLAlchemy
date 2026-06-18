@@ -14,7 +14,7 @@ def get_items(db:Session, skip: int=0, limit: int=10):
     return db_item
 
 def create_item(db:Session, item:schemas.Items_create):
-    db_item = models.Items(**item.dict())
+    db_item = models.Items(**item.model_dump())
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
@@ -22,7 +22,7 @@ def create_item(db:Session, item:schemas.Items_create):
 
 def update_item(db:Session, item:schemas.Items_update, items_id:str):
     db_item = get_item(db, items_id)
-    for key, value in item.dict().items():
+    for key, value in item.model_dump().items():
         setattr(db_item, key, value)
     db.commit()
     db.refresh(db_item)

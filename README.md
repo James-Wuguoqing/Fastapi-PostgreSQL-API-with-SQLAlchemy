@@ -28,7 +28,8 @@ engine=create_engine("postgresql://{YOUR_DATABASE_USER}:{YOUR_DATABASE_PASSWORD}
 ```
 
 ### Create a virtual environment
-This can be done with 
+Python 3.10 or newer is required. Create a virtual environment with:
+
 ``` python -m venv env ```
 
 activate the virtual environment with 

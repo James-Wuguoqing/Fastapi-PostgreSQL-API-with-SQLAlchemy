@@ -1,6 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class ItemsBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     call_number: int
     alias: str
     location: str
@@ -12,9 +14,6 @@ class ItemsBase(BaseModel):
     area_code: int
     comment: str
 
-    class config:
-        orm_mode = True
-
 
 class Items_update(ItemsBase):
     pass
@@ -22,11 +21,5 @@ class Items_update(ItemsBase):
 class Items_create(ItemsBase):
     id: str
 
-    class Config:
-        orm_mode = True
-
 class Items(ItemsBase):
     id: str
-
-    class Config:
-        orm_mode = True
